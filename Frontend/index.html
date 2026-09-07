@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <!-- Makes the website responsive on mobile/tablet devices -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>LinkShield | URL Security Scanner</title>
+
+    <!-- Main stylesheet -->
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <!-- =========================================================
+         NAVIGATION BAR
+         ========================================================= -->
+    <header class="navbar">
+
+        <div class="nav-container">
+
+            <!-- Logo / Brand -->
+            <a href="#" class="brand">
+                <img src="assets/logo.png" alt="LinkShield Logo">
+                <span>LinkShield</span>
+            </a>
+
+            <!-- Navigation links -->
+            <nav class="nav-links">
+                <a href="#scanner">Scanner</a>
+                <a href="#how-it-works">How It Works</a>
+                <a href="#features">Features</a>
+            </nav>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================================================
+         HERO / URL SCANNER SECTION
+         ========================================================= -->
+    <main>
+
+        <section class="hero" id="scanner">
+
+            <div class="hero-content">
+
+                <div class="badge">
+                    🛡️ Smart URL Security
+                </div>
+
+                <h1>
+                    Check Before<br>
+                    <span>You Click.</span>
+                </h1>
+
+                <p class="hero-description">
+                    LinkShield analyzes suspicious URLs and helps identify
+                    potentially fraudulent or phishing websites before you visit them.
+                </p>
+
+
+                <!-- URL Input Form -->
+                <form id="scan-form" class="scanner-form">
+
+                    <div class="input-wrapper">
+
+                        <span class="input-icon">🔗</span>
+
+                        <input
+                            type="text"
+                            id="url-input"
+                            name="url"
+                            placeholder="Enter or paste a URL..."
+                            autocomplete="off"
+                            required
+                        >
+
+                        <button type="submit" id="scan-button">
+                            <span id="button-text">Scan URL</span>
+                            <span id="button-loader" class="loader hidden"></span>
+                        </button>
+
+                    </div>
+
+                    <!-- Validation/error message -->
+                    <p id="input-error" class="error-message hidden"></p>
+
+                </form>
+
+
+                <!-- Small privacy notice -->
+                <div class="privacy-note">
+                    <span>🔒</span>
+                    <span>Your URL is analyzed securely by LinkShield.</span>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================================================
+             RESULTS SECTION
+             This section remains hidden until a scan is completed.
+             ========================================================= -->
+        <section id="results-section" class="results-section hidden">
+
+            <div class="results-container">
+
+                <div class="results-header">
+
+                    <div>
+                        <span class="section-label">SCAN RESULT</span>
+                        <h2>Security Analysis</h2>
+                    </div>
+
+                    <button id="new-scan-button" class="secondary-button">
+                        ↻ New Scan
+                    </button>
+
+                </div>
+
+
+                <!-- Overall result card -->
+                <div class="result-overview">
+
+                    <div class="score-area">
+
+                        <div id="score-circle" class="score-circle">
+
+                            <div class="score-inner">
+                                <span id="risk-score">0</span>
+                                <small>/100</small>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="verdict-area">
+
+                        <span class="section-label">VERDICT</span>
+
+                        <h2 id="verdict">
+                            Analyzing...
+                        </h2>
+
+                        <p id="verdict-description">
+                            We are analyzing this URL.
+                        </p>
+
+                        <div class="scanned-url">
+                            <span>🔗</span>
+                            <span id="scanned-url-text"></span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Analysis breakdown -->
+                <div class="analysis-card">
+
+                    <div class="card-header">
+
+                        <div>
+                            <span class="section-label">ANALYSIS</span>
+                            <h3>Security Checks</h3>
+                        </div>
+
+                        <span id="checks-count" class="checks-count">
+                            0 checks
+                        </span>
+
+                    </div>
+
+
+                    <!--
+                        results.js will dynamically insert
+                        individual security checks here.
+                    -->
+                    <div id="analysis-list" class="analysis-list"></div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================================================
+             HOW IT WORKS
+             ========================================================= -->
+        <section id="how-it-works" class="info-section">
+
+            <div class="section-heading">
+
+                <span class="section-label">HOW IT WORKS</span>
+
+                <h2>
+                    A URL goes through<br>
+                    multiple security checks.
+                </h2>
+
+                <p>
+                    LinkShield breaks down the submitted URL and evaluates
+                    different characteristics that may indicate phishing or fraud.
+                </p>
+
+            </div>
+
+
+            <div class="steps-grid">
+
+                <div class="step-card">
+                    <div class="step-number">01</div>
+                    <h3>Submit URL</h3>
+                    <p>
+                        Enter the website URL you want to verify.
+                    </p>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">02</div>
+                    <h3>Analyze</h3>
+                    <p>
+                        The backend analyzes the URL using multiple security checks.
+                    </p>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">03</div>
+                    <h3>Get Verdict</h3>
+                    <p>
+                        Receive a risk score and detailed explanation of the findings.
+                    </p>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================================================
+             FEATURES
+             ========================================================= -->
+        <section id="features" class="features-section">
+
+            <div class="section-heading center">
+
+                <span class="section-label">FEATURES</span>
+
+                <h2>
+                    Security analysis,<br>
+                    made understandable.
+                </h2>
+
+            </div>
+
+
+            <div class="features-grid">
+
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Risk Score</h3>
+                    <p>
+                        Get a simple score representing the URL's calculated risk.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3>Detailed Analysis</h3>
+                    <p>
+                        See which characteristics contributed to the final verdict.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Fast Results</h3>
+                    <p>
+                        Submit a URL and receive the analysis without unnecessary steps.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🛡️</div>
+                    <h3>Phishing Detection</h3>
+                    <p>
+                        Identify URL patterns commonly associated with fraudulent websites.
+                    </p>
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================================================
+         FOOTER
+         ========================================================= -->
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div class="brand footer-brand">
+                <img src="assets/logo.png" alt="LinkShield Logo">
+                <span>LinkShield</span>
+            </div>
+
+            <p>
+                Stay alert. Check before you click.
+            </p>
+
+            <p class="copyright">
+                © 2026 LinkShield
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <!-- JavaScript files -->
+    <script src="results.js"></script>
+    <script src="script.js"></script>
+
+</body>
+</html>
