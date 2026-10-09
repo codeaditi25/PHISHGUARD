@@ -60,6 +60,11 @@ from analysis.scoring import (
     create_analysis_result,
 )
 
+from analysis.ml_model import (
+    predict_ml_risk,
+    get_ml_details,
+)
+
 
 # =========================================================
 # CREATE FASTAPI APPLICATION
@@ -288,12 +293,22 @@ def analyze_url(
 
 
     # -----------------------------------------------------
-    # Calculate score + verdict
+    # Run Machine Learning prediction
+    # -----------------------------------------------------
+
+    ml_prob = predict_ml_risk(parsed)
+    ml_details = get_ml_details(parsed)
+
+
+    # -----------------------------------------------------
+    # Calculate score + verdict (Hybrid: Rules + ML)
     # -----------------------------------------------------
 
     result = create_analysis_result(
         analysis_url,
         checks,
+        ml_prob=ml_prob,
+        ml_details=ml_details,
     )
 
 

@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+Backend/linkshield.db
+Backend/__pycache__/
+Backend/analysis/__pycache__/
+.DS_Store

@@ -47,6 +47,7 @@ Each check contributes points to a total risk score:
 
 **Backend**
 - [FastAPI](https://fastapi.tiangolo.com/) — web framework / REST API
+- [scikit-learn](https://scikit-learn.org/) & [joblib](https://joblib.readthedocs.io/) — Random Forest Classifier for AI/ML phishing URL detection
 - [SQLAlchemy](https://www.sqlalchemy.org/) — ORM
 - SQLite — storage for scan history
 - [Pydantic](https://docs.pydantic.dev/) — request/response validation
@@ -101,7 +102,8 @@ cd PHISHGUARD
 
 ```bash
 cd Backend
-pip install fastapi uvicorn sqlalchemy pydantic
+pip install fastapi uvicorn sqlalchemy pydantic scikit-learn joblib numpy
+# Or: pip install -r requirements.txt
 ```
 
 Run the API server:

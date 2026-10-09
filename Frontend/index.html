@@ -60,7 +60,7 @@
             <div class="hero-content">
                 <div class="hero-copy">
                     <div class="badge">
-                        <span>●</span> Smart URL Security
+                        <span>●</span> Hybrid Security: Rules + Machine Learning
                     </div>
 
                     <p class="eyebrow">DON'T TAKE THE BAIT</p>
@@ -182,6 +182,83 @@
                 </div>
 
 
+                <!-- =========================================================
+                     HYBRID ARCHITECTURE: DUAL ENGINES (RULES + AI/ML)
+                     ========================================================= -->
+                <div class="hybrid-engines-grid">
+
+                    <div class="engine-card">
+                        <div class="engine-card-header">
+                            <span class="engine-icon">📋</span>
+                            <div>
+                                <span class="engine-badge">LAYER 1</span>
+                                <h4>Heuristic Rules</h4>
+                            </div>
+                        </div>
+                        <div class="engine-score-row">
+                            <div class="engine-score-val" id="rule-score-display">0<small>/100</small></div>
+                            <span class="engine-pill" id="rule-status-pill">Heuristics</span>
+                        </div>
+                        <p class="engine-desc">11 deterministic structural checks: URL length, IP domain, keywords, hyphens, and encoding patterns.</p>
+                    </div>
+
+                    <div class="engine-card engine-card-ml">
+                        <div class="engine-card-header">
+                            <span class="engine-icon">🤖</span>
+                            <div>
+                                <span class="engine-badge ml-badge">LAYER 2: AI / ML</span>
+                                <h4>Random Forest Classifier</h4>
+                            </div>
+                        </div>
+                        <div class="engine-score-row">
+                            <div class="engine-score-val" id="ml-score-display">0<small>/100</small></div>
+                            <span class="engine-pill" id="ml-status-pill">ML Model</span>
+                        </div>
+                        <p class="engine-desc">Trained on 30,000+ real-world URLs across 15 lexical signals with 85%+ validation accuracy.</p>
+                    </div>
+
+                    <div class="engine-card engine-card-hybrid">
+                        <div class="engine-card-header">
+                            <span class="engine-icon">🛡️</span>
+                            <div>
+                                <span class="engine-badge hybrid-badge">FINAL BLEND</span>
+                                <h4>Hybrid Decision Engine</h4>
+                            </div>
+                        </div>
+                        <div class="engine-score-row">
+                            <div class="engine-score-val" id="hybrid-score-display">0<small>/100</small></div>
+                            <span class="engine-pill" id="hybrid-status-pill">50% Rules + 50% ML</span>
+                        </div>
+                        <p class="engine-desc">Blends rule-based explainability with adaptive machine learning pattern recognition.</p>
+                    </div>
+
+                </div>
+
+
+                <!-- =========================================================
+                     MACHINE LEARNING TELEMETRY & SIGNALS PANEL
+                     ========================================================= -->
+                <div class="ml-insights-card" id="ml-insights-card">
+                    <div class="ml-insights-header">
+                        <div class="ml-header-left">
+                            <span class="ml-pulse-dot"></span>
+                            <h4>Machine Learning Model Telemetry</h4>
+                        </div>
+                        <div class="ml-meta-badges">
+                            <span class="ml-meta-tag" id="ml-meta-model">Model: Random Forest (100 Trees)</span>
+                            <span class="ml-meta-tag" id="ml-meta-features">Features: 15 Lexical Signals</span>
+                            <span class="ml-meta-tag" id="ml-meta-confidence">Confidence: --</span>
+                        </div>
+                    </div>
+                    <div class="ml-signals-wrapper">
+                        <span class="ml-signals-label">Detected Pattern Signals:</span>
+                        <div class="ml-signals-tags" id="ml-signals-list">
+                            <span class="ml-signal-tag safe">No anomalous patterns identified</span>
+                        </div>
+                    </div>
+                </div>
+
+
                 <!-- Analysis breakdown -->
                 <div class="analysis-card">
 
@@ -246,9 +323,9 @@
 
                 <div class="step-card">
                     <div class="step-number">02</div>
-                    <h3>Analyze</h3>
+                    <h3>Dual-Engine Analysis</h3>
                     <p>
-                        The backend analyzes the URL using multiple security checks.
+                        Combines 11 heuristic rules with a trained Random Forest AI model for deep pattern recognition.
                     </p>
                 </div>
 

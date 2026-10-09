@@ -14,10 +14,97 @@ function displayResults(data) {
 
     document.getElementById("scanned-url-text").textContent = url;
 
+    updateHybridScores(data);
+    updateMLInsights(data.ml_details, data.ml_score);
+
     renderChecks(checks);
 
     document.getElementById("checks-count").textContent =
         `${checks.length} check${checks.length === 1 ? "" : "s"}`;
+}
+
+/* Update dual-engine breakdown cards */
+function updateHybridScores(data) {
+    const ruleScore = data.rule_score != null ? Number(data.rule_score) : null;
+    const mlScore = data.ml_score != null ? Number(data.ml_score) : null;
+    const hybridScore = Number(data.score ?? 0);
+
+    const ruleEl = document.getElementById("rule-score-display");
+    const rulePill = document.getElementById("rule-status-pill");
+    if (ruleEl) {
+        ruleEl.innerHTML = ruleScore != null ? `${ruleScore}<small>/100</small>` : "--";
+        if (ruleScore != null) {
+            ruleEl.style.color = getScoreColor(ruleScore);
+            rulePill.textContent = ruleScore < 30 ? "SAFE" : (ruleScore < 70 ? "WARNING" : "RISK");
+            rulePill.style.backgroundColor = getScoreBgColor(ruleScore);
+            rulePill.style.color = getScoreColor(ruleScore);
+        }
+    }
+
+    const mlEl = document.getElementById("ml-score-display");
+    const mlPill = document.getElementById("ml-status-pill");
+    if (mlEl) {
+        mlEl.innerHTML = mlScore != null ? `${mlScore}<small>/100</small>` : "--";
+        if (mlScore != null) {
+            mlEl.style.color = getScoreColor(mlScore);
+            const mlVerdict = data.ml_details?.verdict || (mlScore < 50 ? "LEGITIMATE" : "PHISHING RISK");
+            mlPill.textContent = mlVerdict.toUpperCase();
+            mlPill.style.backgroundColor = getScoreBgColor(mlScore);
+            mlPill.style.color = getScoreColor(mlScore);
+        }
+    }
+
+    const hybridEl = document.getElementById("hybrid-score-display");
+    const hybridPill = document.getElementById("hybrid-status-pill");
+    if (hybridEl) {
+        hybridEl.innerHTML = `${hybridScore}<small>/100</small>`;
+        hybridEl.style.color = getScoreColor(hybridScore);
+        if (hybridPill) {
+            hybridPill.textContent = data.verdict ? data.verdict.toUpperCase() : "HYBRID BLEND";
+            hybridPill.style.backgroundColor = getScoreBgColor(hybridScore);
+            hybridPill.style.color = getScoreColor(hybridScore);
+        }
+    }
+}
+
+/* Update ML signals and telemetry badge list */
+function updateMLInsights(mlDetails, mlScore) {
+    const confidenceEl = document.getElementById("ml-meta-confidence");
+    const signalsList = document.getElementById("ml-signals-list");
+
+    if (confidenceEl && mlDetails?.confidence != null) {
+        const confPercent = Math.round(mlDetails.confidence * 100);
+        confidenceEl.textContent = `Confidence: ${confPercent}%`;
+    }
+
+    if (signalsList) {
+        signalsList.innerHTML = "";
+        const signals = mlDetails?.signals_detected || [];
+
+        if (signals.length === 0) {
+            const isSafe = (mlScore == null || mlScore < 50);
+            const tag = document.createElement("span");
+            tag.className = "ml-signal-tag safe";
+            tag.textContent = isSafe 
+                ? "✓ No anomalous pattern signals identified" 
+                : "Standard structural characteristics";
+            signalsList.appendChild(tag);
+        } else {
+            signals.forEach(function (signal) {
+                const tag = document.createElement("span");
+                tag.className = "ml-signal-tag warning";
+                tag.textContent = `⚡ ${signal}`;
+                signalsList.appendChild(tag);
+            });
+        }
+    }
+}
+
+/* Get soft background color matching score */
+function getScoreBgColor(score) {
+    if (score < 30) return "rgba(22, 163, 74, 0.12)";
+    if (score < 70) return "rgba(217, 119, 6, 0.12)";
+    return "rgba(220, 38, 38, 0.12)";
 }
 
 /* Update circular score indicator */

@@ -1089,3 +1089,252 @@ body {
         transition: none;
     }
 }
+
+
+/* =========================================================
+   HYBRID ARCHITECTURE & AI/ML TELEMETRY STYLES
+   ========================================================= */
+
+.hybrid-engines-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 24px;
+}
+
+@media (max-width: 900px) {
+    .hybrid-engines-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.engine-card {
+    background: #ffffff;
+    border: 1px solid #e5eaf1;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 20px rgba(23, 32, 51, 0.04);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.engine-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 28px rgba(23, 32, 51, 0.08);
+    border-color: #cbd5e1;
+}
+
+.engine-card-ml {
+    border-color: #dbeafe;
+    background: linear-gradient(180deg, #ffffff 0%, #f8faff 100%);
+}
+
+.engine-card-hybrid {
+    border-color: #fef3c7;
+    background: linear-gradient(180deg, #ffffff 0%, #fffdf7 100%);
+}
+
+.engine-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.engine-icon {
+    font-size: 24px;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: #f1f5f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.engine-card-ml .engine-icon {
+    background: #eff6ff;
+}
+
+.engine-card-hybrid .engine-icon {
+    background: #fffbeb;
+}
+
+.engine-badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: #64748b;
+    margin-bottom: 2px;
+}
+
+.engine-badge.ml-badge {
+    color: #2563eb;
+}
+
+.engine-badge.hybrid-badge {
+    color: #d97706;
+}
+
+.engine-card h4 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #172033;
+    line-height: 1.2;
+}
+
+.engine-score-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding: 10px 14px;
+    background: #f8fafc;
+    border-radius: 10px;
+    border: 1px solid #edf2f7;
+}
+
+.engine-score-val {
+    font-size: 26px;
+    font-weight: 800;
+    color: #172033;
+    line-height: 1;
+}
+
+.engine-score-val small {
+    font-size: 14px;
+    font-weight: 600;
+    color: #94a3b8;
+    margin-left: 2px;
+}
+
+.engine-pill {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 20px;
+    background: #e2e8f0;
+    color: #475569;
+    letter-spacing: 0.5px;
+}
+
+.engine-desc {
+    font-size: 13px;
+    color: #64748b;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* Machine Learning Telemetry Panel */
+.ml-insights-card {
+    margin-top: 24px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 20px 24px;
+    box-shadow: 0 4px 20px rgba(23, 32, 51, 0.04);
+}
+
+.ml-insights-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.ml-header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.ml-pulse-dot {
+    width: 10px;
+    height: 10px;
+    background: #22c55e;
+    border-radius: 50%;
+    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2);
+    animation: ml-pulse 2s infinite;
+}
+
+@keyframes ml-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4); }
+    70% { box-shadow: 0 0 0 8px rgba(34, 197, 94, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+}
+
+.ml-insights-header h4 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #172033;
+}
+
+.ml-meta-badges {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.ml-meta-tag {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 6px;
+    background: #f1f5f9;
+    color: #475569;
+    border: 1px solid #e2e8f0;
+}
+
+.ml-signals-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-top: 14px;
+    flex-wrap: wrap;
+}
+
+.ml-signals-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #475569;
+}
+
+.ml-signals-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.ml-signal-tag {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.ml-signal-tag.safe {
+    background: #f0fdf4;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+}
+
+.ml-signal-tag.warning {
+    background: #fffbeb;
+    color: #b45309;
+    border: 1px solid #fde68a;
+}
+
+.ml-signal-tag.danger {
+    background: #fef2f2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+}
