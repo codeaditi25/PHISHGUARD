@@ -1,178 +1,80 @@
-"""
-LinkShield - URL Parser
+"""Safe URL normalization and signal extraction for LinkShield."""
 
-Purpose:
-    Parse a submitted URL into useful components.
+from __future__ import annotations
 
-This module does NOT decide whether a URL is malicious.
-It only extracts and normalizes information that the
-security-checking module can use.
-"""
-
-from urllib.parse import urlparse
 import ipaddress
+import re
+from urllib.parse import parse_qsl, unquote_plus, urlparse
+
+MULTI_PART_SUFFIXES = {
+    "co.uk", "org.uk", "ac.uk", "gov.uk", "com.au", "net.au", "org.au",
+    "co.in", "com.br", "co.jp", "co.nz", "com.mx",
+}
 
 
 def normalize_url(url: str) -> str:
-    """
-    Normalize the URL before analysis.
-
-    If the user enters:
-        google.com
-
-    we internally treat it as:
-        https://google.com
-
-    This does NOT mean we are visiting the website.
-    """
-
+    """Trim a user value and add HTTPS only when it has no scheme."""
     url = url.strip()
-
     if not url:
         return ""
-
-    # Add HTTPS only when the user did not provide a scheme.
-    if not urlparse(url).scheme:
-        url = "https://" + url
-
-    return url
-
-
-def parse_url(url: str) -> dict:
-    """
-    Parse a URL and return its important components.
-
-    Returns:
-        A dictionary containing scheme, hostname, port,
-        path, query, fragment, etc.
-    """
-
-    normalized = normalize_url(url)
-
-    parsed = urlparse(normalized)
-
-    hostname = parsed.hostname or ""
-
-    return {
-        "original": url,
-        "normalized": normalized,
-
-        # Example: https
-        "scheme": parsed.scheme.lower(),
-
-        # Example: example.com
-        "hostname": hostname.lower(),
-
-        # Example: 443
-        "port": parsed.port,
-
-        # Example: /login/account
-        "path": parsed.path,
-
-        # Example: user=123
-        "query": parsed.query,
-
-        # Example: section
-        "fragment": parsed.fragment,
-
-        # Username/password can be useful when detecting
-        # suspicious URL structures.
-        "username": parsed.username,
-
-        "password": parsed.password,
-
-        # Complete network location.
-        "netloc": parsed.netloc,
-
-        # Number of subdomains.
-        "subdomain_count": count_subdomains(hostname),
-
-        # Whether hostname is an IP address.
-        "is_ip": is_ip_address(hostname),
-    }
+    return url if urlparse(url).scheme else f"https://{url}"
 
 
 def is_ip_address(hostname: str) -> bool:
-    """
-    Determine whether the hostname is an IPv4 or IPv6 address.
-
-    Example:
-
-        192.168.1.1
-        2001:db8::1
-
-    return True.
-
-    Example:
-
-        google.com
-
-    return False.
-    """
-
     if not hostname:
         return False
-
     try:
         ipaddress.ip_address(hostname)
         return True
-
     except ValueError:
         return False
 
 
+def get_registrable_domain(hostname: str) -> str:
+    """Return a best-effort registrable domain without treating IPs as names."""
+    if not hostname or is_ip_address(hostname):
+        return hostname
+    labels = hostname.lower().strip(".").split(".")
+    if len(labels) <= 2:
+        return ".".join(labels)
+    suffix_size = 2 if ".".join(labels[-2:]) in MULTI_PART_SUFFIXES else 1
+    return ".".join(labels[-(suffix_size + 1):])
+
+
 def count_subdomains(hostname: str) -> int:
-    """
-    Count subdomain levels.
-
-    Example:
-
-        login.example.com
-
-    returns:
-        1
-
-    Example:
-
-        secure.login.example.com
-
-    returns:
-        2
-
-    The main domain is not counted as a subdomain.
-    """
-
     if not hostname or is_ip_address(hostname):
         return 0
-
-    parts = hostname.split(".")
-
-    # A normal domain such as example.com has two parts.
-    if len(parts) <= 2:
-        return 0
-
-    return len(parts) - 2
+    labels = hostname.lower().strip(".").split(".")
+    registered = get_registrable_domain(hostname).split(".")
+    return max(0, len(labels) - len(registered))
 
 
-def get_url_length(url: str) -> int:
-    """
-    Return the total URL length.
-    """
+def parse_url(url: str) -> dict:
+    """Parse once and expose decoded fields used by the security checks."""
+    normalized = normalize_url(url)
+    parsed = urlparse(normalized)
+    hostname = (parsed.hostname or "").lower().rstrip(".")
+    decoded_path = unquote_plus(parsed.path)
+    decoded_query = unquote_plus(parsed.query)
 
-    return len(url)
-
-
-def get_domain_length(hostname: str) -> int:
-    """
-    Return the hostname/domain length.
-    """
-
-    return len(hostname)
-
-
-def get_path_length(path: str) -> int:
-    """
-    Return the URL path length.
-    """
-
-    return len(path)
+    return {
+        "original": url,
+        "normalized": normalized,
+        "scheme": parsed.scheme.lower(),
+        "hostname": hostname,
+        # Raises ValueError for a malformed port; the API turns it into HTTP 400.
+        "port": parsed.port,
+        "path": parsed.path,
+        "query": parsed.query,
+        "decoded_path": decoded_path,
+        "decoded_query": decoded_query,
+        "query_pairs": parse_qsl(parsed.query, keep_blank_values=True),
+        "fragment": parsed.fragment,
+        "username": parsed.username,
+        "password": parsed.password,
+        "netloc": parsed.netloc,
+        "subdomain_count": count_subdomains(hostname),
+        "registrable_domain": get_registrable_domain(hostname),
+        "is_ip": is_ip_address(hostname),
+        "encoded_sequence_count": len(re.findall(r"%[0-9a-fA-F]{2}", normalized)),
+    }
